@@ -1,0 +1,83 @@
+/* AdminPage.css */
+
+.admin-container {
+    max-width: 90vw;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+  }
+  
+  .admin-section {
+    margin-top: 20px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .admin-section h3 {
+    color: #444;
+  }
+  
+  input {
+    margin: 5px;
+    padding: 8px;
+    width: calc(100% - 20px);
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  button {
+    margin: 5px;
+    padding: 8px 12px;
+    background-color: #0070f3;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #005bb5;
+  }
+  
+  .user-list, .game-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .user-item, .game-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .user-item button, .game-item button {
+    background-color: #e53e3e;
+    margin-left: 10px;
+  }
+  
+  .user-item button:hover, .game-item button:hover {
+    background-color: #c53030;
+  }
+  
+  .team-select {
+    margin-bottom: 10px;
+  }
+  
+  .team-select h4 {
+    margin-bottom: 5px;
+  }
+  
+  .team-select select {
+    margin-right: 5px;
+    padding: 5px;
+    width: 150px;
+  }

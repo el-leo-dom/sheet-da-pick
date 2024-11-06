@@ -1,0 +1,370 @@
+.mainpage-overlay{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    height: 100dvh;
+    width: 100dvw;
+    background-color: #19376D;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.mainpage-overlay .mainpage-sidebar-container{
+    position: relative;
+    height: 100%;
+    width: 17.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.mainpage-overlay .mainpage-sidebar{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: #0B2447;
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1rem;
+}
+
+.mainpage-overlay .mainpage-sidebar-option{
+    position: relative;
+    width: 100%;
+    padding: 0.5rem;
+    background-color: #576CBC;
+    color: white;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    cursor: pointer;
+    transition: 0.15s ease background-color;
+}
+
+.mainpage-overlay .mainpage-sidebar-option:hover{
+    background-color: white;
+    color: #576CBC;
+}
+
+.mainpage-overlay .mainpage-content-container{
+    position: relative;
+    height: 100%;
+    width: 82.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mainpage-overlay .mainpage-content-sheet{
+    position: relative;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.mainpage-overlay .mainpage-content-sheet-top3-container{
+    position: relative;
+    width: 50%;
+    height: 25%;
+    background-color: #576CBC;
+    margin-top: 2rem;
+    border-radius: 2rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.mainpage-overlay .mainpage-content-sheet-top3-title{
+    position: relative;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 20%;
+    font-family: 'Montserrat';
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.mainpage-overlay .mainpage-content-sheet-top3-podium{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    height: 70%;
+    gap: 2rem;
+    padding-top: 0.5rem;
+}
+
+.mainpage-overlay .mainpage-content-sheet-top3-podium3{
+    position: relative;
+    height: 6rem;
+    width: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    background-color: white;
+    margin-top: 2rem;
+}
+
+.mainpage-overlay .mainpage-content-sheet-top3-podium1{
+    position: relative;
+    display: flex;
+    height: 8rem;
+    width: 8rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    background-color: white;
+}
+
+.mainpage-overlay .mainpage-content-sheet-top3-podium2{
+    position: relative;
+    display: flex;
+    height: 6rem;
+    width: 6rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    background-color: white;
+    margin-top: 2rem;
+}
+
+.mainpage-overlay .mainpage-content-info-container{
+    position: relative;
+    width: 100%;
+    height: 70%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+}
+
+.mainpage-overlay .mainpage-content-latestgames-list{
+    position: relative;
+    width: 30%;
+    height: 90%;
+    margin-top: 2rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-direction: start;
+    padding: 0.75rem;
+    color: white;
+}
+
+.mainpage-overlay .mainpage-content-sheet-list{
+    position: relative;
+    width: 50%;
+    height: 90%;
+    background-color: #0B2447;
+    margin-top: 2rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-direction: start;
+    padding: 0.75rem;
+}
+
+
+.mainpage-overlay .mainpage-content-sheet-list{
+    position: relative;
+    width: 60%;
+    height: 90%;
+    background-color: #0B2447;
+    margin-top: 2rem;
+    border-radius: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-direction: start;
+    padding: 0.75rem;
+    overflow-y: scroll;
+}
+
+.mainpage-overlay .mainpage-content-sheet-list-topbar{
+    position: relative;
+    width: 100%;
+    background-color: #576CBC;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.mainpage-overlay .mainpage-content-sheet-list-topbar-player{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-size: 1.125rem;
+    padding-left: 1.5rem;
+}
+
+.mainpage-overlay .mainpage-content-sheet-list-topbar-games{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-size: 1.125rem;
+    border-left: 1.5px solid #0b244757;
+}
+
+.mainpage-overlay .mainpage-content-sheet-list-topbar-wins{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-size: 1.125rem;
+    border-left: 1.5px solid #0b244757;
+}
+
+.mainpage-overlay .mainpage-content-sheet-list-topbar-losses{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-size: 1.125rem;
+    border-left: 1.5px solid #0b244757;
+}
+
+.mainpage-overlay .mainpage-content-sheet-list-topbar-lp{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-size: 1.125rem;
+    border-left: 1.5px solid #0b244757;
+}
+
+
+.mainpage-overlay .mainpage-content-sheet-list-item{
+    position: relative;
+    width: 100%;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: 0.1s ease background-color;
+}
+
+.mainpage-overlay .mainpage-content-sheet-list-item:hover{
+    background-color: #576bbc2f;
+}
+
+.mainpage-overlay .mainpage-content-sheet-list-player{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 40%;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-size: 1rem;
+    padding-left: 1.5rem;
+}
+
+.mainpage-overlay .mainpage-content-sheet-list-games{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-size: 1rem;
+    border-left: 1.5px solid #0b244757;
+}
+
+.mainpage-overlay .mainpage-content-sheet-list-wins{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-size: 1rem;
+    border-left: 1.5px solid #0b244757;
+}
+
+.mainpage-overlay .mainpage-content-sheet-list-losses{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-size: 1rem;
+    border-left: 1.5px solid #0b244757;
+}
+
+.mainpage-overlay .mainpage-content-sheet-list-lp{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-size: 1rem;
+    border-left: 1.5px solid #0b244757;
+}

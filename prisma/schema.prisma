@@ -1,0 +1,45 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+
+model Player {
+  id                Int      @id @default(autoincrement())
+  name              String
+  lpPick            Int      @default(0) // LP na pick
+  profilePic        String?  // url da profile pic
+  gamesPlayedPick   Int      @default(0)
+  winsPick          Int      @default(0)
+
+  // Relation fields to PickGame for each team
+  teamRedGames  PickGame[]  @relation("TeamRed")
+  teamBlueGames  PickGame[]  @relation("TeamBlue")
+}
+
+model PickGame {
+  id           Int      @id @default(autoincrement())
+  date         DateTime @default(now())
+  teamRed        Player[] @relation("TeamRed") // Players in team A for this game
+  teamBlue        Player[] @relation("TeamBlue") // Players in team B for this game
+  winningTeam  Team     // Enum to specify which team won
+
+  // Optional MVP player of the game
+  //  mvpPlayerId  Int?     @default(null)
+  //  mvpPlayer    Player?  @relation(fields: [mvpPlayerId], references: [id])
+}
+
+enum Team {
+  TEAM_RED
+  TEAM_BLUE
+}
