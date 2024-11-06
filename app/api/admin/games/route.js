@@ -2,34 +2,66 @@
 import prisma from '../../../../lib/prisma';
 
 export async function GET() {
-    const games = await prisma.pickGame.findMany({
-      include: {
-        teamRed: {
-          select: {
-            id: true,
-            name: true,
-          },
-        },
-        teamBlue: {
-          select: {
-            id: true,
-            name: true,
+  const games = await prisma.pickGame.findMany({
+    include: {
+      teamRed: {
+        select: {
+          id: true,
+          name: true,
+          championSelections: {
+            select: {
+              gameId: true,
+              champion: true,
+            },
           },
         },
       },
-    });
-  
-    return new Response(JSON.stringify(games), { status: 200 });
-  }
+      teamBlue: {
+        select: {
+          id: true,
+          name: true,
+          championSelections: {
+            select: {
+              gameId: true,
+              champion: true,
+            },
+          },
+        },
+      },
+    },
+  });
 
+  // Filter champion selections for each game based on the game ID
+  const gamesWithFilteredSelections = games.map((game) => ({
+    ...game,
+    teamRed: game.teamRed.map((player) => ({
+      ...player,
+      championSelections: player.championSelections.filter(
+        (selection) => selection.gameId === game.id
+      ),
+    })),
+    teamBlue: game.teamBlue.map((player) => ({
+      ...player,
+      championSelections: player.championSelections.filter(
+        (selection) => selection.gameId === game.id
+      ),
+    })),
+  }));
+
+  return new Response(JSON.stringify(gamesWithFilteredSelections), { status: 200 });
+}
   export async function POST(request) {
-    const { teamRed, teamBlue, winningTeam } = await request.json();
+    const { teamRed, teamBlue, winningTeam, playerChampionPairs } = await request.json();
   
     // Begin a transaction
     const newGame = await prisma.$transaction(async (tx) => {
+
+      const teamRedPlayerIds = teamRed.map(({ playerId }) => playerId);
+      const teamBluePlayerIds = teamBlue.map(({ playerId }) => playerId);
+
       // Fetch player data for both teams to get LP values
-      const teamRedPlayers = await tx.player.findMany({ where: { id: { in: teamRed } } });
-      const teamBluePlayers = await tx.player.findMany({ where: { id: { in: teamBlue } } });
+      const teamRedPlayers = await tx.player.findMany({ where: { id: { in: teamRedPlayerIds } } });
+      const teamBluePlayers = await tx.player.findMany({ where: { id: { in: teamBluePlayerIds } } });
   
       // Calculate total LP for each team
       const totalLpRed = teamRedPlayers.reduce((sum, player) => sum + player.lpPick, 0);
@@ -62,42 +94,56 @@ export async function GET() {
       const createdGame = await tx.pickGame.create({
         data: {
           date: new Date(),
-          teamRed: { connect: teamRed.map((id) => ({ id })) },
-          teamBlue: { connect: teamBlue.map((id) => ({ id })) },
+          teamRed: { connect: teamRedPlayerIds.map((id) => ({ id })) },
+          teamBlue: { connect: teamBluePlayerIds.map((id) => ({ id })) },
           winningTeam,
+          lpChangeTeamRed: winningTeam === 'TEAM_RED' ? winningTeamAdjustment : losingTeamAdjustment,
+          lpChangeTeamBlue: winningTeam === 'TEAM_BLUE' ? winningTeamAdjustment : losingTeamAdjustment,
         },
       });
+
+        // Add game-specific champion entries
+        await Promise.all(playerChampionPairs.map(({ playerId, champion }) =>
+          tx.pickGamePlayerChampion.create({
+            data: {
+              gameId: createdGame.id,  // Link specifically to the new game
+              playerId,
+              champion,
+            },
+          })
+        ));
   
-      // Update games played for all players in both teams
-      const allPlayers = [...teamRed, ...teamBlue];
-      await tx.player.updateMany({
-        where: { id: { in: allPlayers } },
-        data: { gamesPlayedPick: { increment: 1 } },
-      });
+     // Update games played for all players in both teams
+    const allPlayers = [...teamRedPlayerIds, ...teamBluePlayerIds];
+    await tx.player.updateMany({
+      where: { id: { in: allPlayers } },
+      data: { gamesPlayedPick: { increment: 1 } },
+    });
   
       // Update games won for players in the winning team
-      const winningPlayers = winningTeam === 'TEAM_RED' ? teamRed : teamBlue;
-      await tx.player.updateMany({
-        where: { id: { in: winningPlayers } },
-        data: { winsPick: { increment: 1 } },
-      });
+    const winningPlayers = winningTeam === 'TEAM_RED' ? teamRedPlayerIds : teamBluePlayerIds;
+    await tx.player.updateMany({
+      where: { id: { in: winningPlayers } },
+      data: { winsPick: { increment: 1 } },
+    });
   
       // Apply LP adjustments
-      const losingPlayers = winningTeam === 'TEAM_RED' ? teamBlue : teamRed;
-      await Promise.all([
-        ...winningPlayers.map((id) =>
-          tx.player.update({
-            where: { id },
-            data: { lpPick: { increment: winningTeamAdjustment } },
-          })
-        ),
-        ...losingPlayers.map((id) =>
-          tx.player.update({
-            where: { id },
-            data: { lpPick: { increment: losingTeamAdjustment } },
-          })
-        ),
-      ]);
+    const losingPlayers = winningTeam === 'TEAM_RED' ? teamBluePlayerIds : teamRedPlayerIds;
+    await Promise.all([
+      ...winningPlayers.map((id) =>
+        tx.player.update({
+          where: { id },
+          data: { lpPick: { increment: winningTeamAdjustment } },
+        })
+      ),
+      ...losingPlayers.map((id) =>
+        tx.player.update({
+          where: { id },
+          data: { lpPick: { increment: losingTeamAdjustment } },
+        })
+      ),
+    ]);
+
   
       return createdGame;
     });

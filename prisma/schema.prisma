@@ -17,7 +17,7 @@ datasource db {
 model Player {
   id                Int      @id @default(autoincrement())
   name              String
-  lpPick            Int      @default(0) // LP na pick
+  lpPick            Int      @default(1350) // LP na pick
   profilePic        String?  // url da profile pic
   gamesPlayedPick   Int      @default(0)
   winsPick          Int      @default(0)
@@ -25,6 +25,7 @@ model Player {
   // Relation fields to PickGame for each team
   teamRedGames  PickGame[]  @relation("TeamRed")
   teamBlueGames  PickGame[]  @relation("TeamBlue")
+  championSelections PickGamePlayerChampion[]
 }
 
 model PickGame {
@@ -37,6 +38,18 @@ model PickGame {
   // Optional MVP player of the game
   //  mvpPlayerId  Int?     @default(null)
   //  mvpPlayer    Player?  @relation(fields: [mvpPlayerId], references: [id])
+  lpChangeTeamRed   Float    @default(0)
+  lpChangeTeamBlue  Float    @default(0)
+  playerChampionPairs  PickGamePlayerChampion[]
+}
+
+model PickGamePlayerChampion {
+  id          Int      @id @default(autoincrement())
+  game        PickGame @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  gameId      Int
+  player      Player   @relation(fields: [playerId], references: [id])
+  playerId    Int
+  champion    String
 }
 
 enum Team {

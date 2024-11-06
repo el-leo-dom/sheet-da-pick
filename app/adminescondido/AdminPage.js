@@ -4,18 +4,20 @@
 import { useState, useEffect } from 'react';
 import './AdminPage.css';
 import { password } from './password.js'
+import { champions } from '../icons/champs/champsArray.js'
 
 export default function AdminPage() {
   const [users, setUsers] = useState([]);
   const [games, setGames] = useState([]);
-  const [newUser, setNewUser] = useState({ name: '', lpPick: 0, profilePic: '' });
+  const [newUser, setNewUser] = useState({ name: '', lpPick: 1350, profilePic: '' });
   const [editUser, setEditUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [inputPassword, setInputPassword] = useState('');
+  const [championSearch, setChampionSearch] = useState('');
 
   const [newGame, setNewGame] = useState({
-    teamRed: Array(5).fill(null),
-    teamBlue: Array(5).fill(null),
+    teamRed: Array(5).fill({ playerId: null, champion: null }),
+    teamBlue: Array(5).fill({ playerId: null, champion: null }),
     winningTeam: 'TEAM_RED',
   });
 
@@ -57,27 +59,34 @@ export default function AdminPage() {
     setEditUser(null);
   }
 
-  async function deleteUser(id) {
-    await fetch(`/api/admin/users/${id}`, { method: 'DELETE' });
-    fetchUsers();
-  }
 
   async function addGame() {
     const { teamRed, teamBlue, winningTeam } = newGame;
 
-    // Only proceed if both teams have 5 unique players selected
-    if (teamRed.includes(null) || teamBlue.includes(null)) {
-      alert('Each team must have 5 unique players.');
+    // Ensure each team has players and champions selected
+    if (teamRed.some(({ playerId, champion }) => !playerId || !champion) ||
+        teamBlue.some(({ playerId, champion }) => !playerId || !champion)) {
+      alert('Each team must have 5 unique players with champions selected.');
       return;
     }
+
+    const playerChampionPairs = [
+      ...teamRed.map((selection) => ({ playerId: selection.playerId, champion: selection.champion })),
+      ...teamBlue.map((selection) => ({ playerId: selection.playerId, champion: selection.champion })),
+    ];
 
     await fetch('/api/admin/games', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ teamRed, teamBlue, winningTeam }),
+      body: JSON.stringify({ teamRed, teamBlue, winningTeam, playerChampionPairs }),
     });
     fetchGames();
-    setNewGame({ teamRed: Array(5).fill(null), teamBlue: Array(5).fill(null), winningTeam: 'TEAM_RED' });
+    setNewGame({ teamRed: Array(5).fill({ playerId: 0, champion: '' }), teamBlue: Array(5).fill({ playerId: 0, champion: '' }), winningTeam: 'TEAM_RED' });
+  }
+
+  async function deleteUser(id) {
+    await fetch(`/api/admin/users/${id}`, { method: 'DELETE' });
+    fetchUsers();
   }
 
 
@@ -86,26 +95,53 @@ export default function AdminPage() {
     fetchGames();
   }
 
-
-  function getAvailablePlayers(team, index) {
-    const selectedPlayers = new Set([...newGame.teamRed, ...newGame.teamBlue].filter(Boolean));
-    const currentPlayerId = newGame[team][index];
-
-    return users.filter(
-      (user) => !selectedPlayers.has(user.id) || user.id === currentPlayerId
-    );
-  }
-
-  function handlePlayerSelection(team, index, playerId) {
+  function handleChampionSelection(team, index, championName) {
     setNewGame((prevGame) => {
       const updatedTeam = [...prevGame[team]];
-      updatedTeam[index] = playerId;
+      updatedTeam[index] = { ...updatedTeam[index], champion: championName };
 
       return {
         ...prevGame,
         [team]: updatedTeam,
       };
     });
+  }
+
+  
+  function getAvailablePlayers(team, index) {
+    const selectedPlayers = new Set([
+      ...newGame.teamRed.map((selection) => selection.playerId),
+      ...newGame.teamBlue.map((selection) => selection.playerId),
+    ]);
+    const currentPlayerId = newGame[team][index].playerId;
+    return users.filter((user) => !selectedPlayers.has(user.id) || user.id === currentPlayerId);
+  }
+
+  function getAvailableChampions(team, index) {
+    const selectedChampions = new Set([
+      ...newGame.teamRed.map((selection) => selection.champion),
+      ...newGame.teamBlue.map((selection) => selection.champion),
+    ]);
+    const currentChampion = newGame[team][index].champion;
+    return champions.filter((champ) => !selectedChampions.has(champ.name) || champ.name === currentChampion);
+  }
+
+  function handlePlayerSelection(team, index, playerId) {
+    setNewGame((prevGame) => {
+      const updatedTeam = [...prevGame[team]];
+      updatedTeam[index] = { ...updatedTeam[index], playerId };
+
+      return {
+        ...prevGame,
+        [team]: updatedTeam,
+      };
+    });
+  }
+
+  function filterChampions() {
+    return champions.filter((champ) =>
+      champ.name.toLowerCase().includes(championSearch.toLowerCase())
+    );
   }
 
   function handlePasswordSubmit() {
@@ -159,43 +195,65 @@ export default function AdminPage() {
       </section>
 
 
-<section className="admin-section">
+      <section className="admin-section">
         <h3>Add Game</h3>
-        <div className="team-select">
-          <h4>Team Red</h4>
-          {newGame.teamRed.map((playerId, index) => (
-            <select
-              key={`teamRed-${index}`}
-              value={playerId || ''}
-              onChange={(e) => handlePlayerSelection('teamRed', index, parseInt(e.target.value))}
-            >
-              <option value="">Select Player</option>
-              {getAvailablePlayers('teamRed', index).map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.name}
-                </option>
-              ))}
-            </select>
-          ))}
-        </div>
 
-        <div className="team-select">
-          <h4>Team Blue</h4>
-          {newGame.teamBlue.map((playerId, index) => (
-            <select
-              key={`teamBlue-${index}`}
-              value={playerId || ''}
-              onChange={(e) => handlePlayerSelection('teamBlue', index, parseInt(e.target.value))}
-            >
-              <option value="">Select Player</option>
-              {getAvailablePlayers('teamBlue', index).map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.name}
-                </option>
-              ))}
-            </select>
-          ))}
-        </div>
+        <div className="team-select-grid">
+  <h4>Team Red</h4>
+  {newGame.teamRed.map((selection, index) => (
+    <div key={`teamRed-${index}`} className="player-champion-selection">
+      <select
+        value={selection.playerId || ''}
+        onChange={(e) => handlePlayerSelection('teamRed', index, parseInt(e.target.value))}
+      >
+        <option value="">Select Player</option>
+        {getAvailablePlayers('teamRed', index).map((user) => (
+          <option key={user.id} value={user.id}>
+            {user.name}
+          </option>
+        ))}
+      </select>
+      <select
+        value={selection.champion || ''}
+        onChange={(e) => handleChampionSelection('teamRed', index, e.target.value)}
+      >
+        <option value="">Select Champion</option>
+        {getAvailableChampions('teamRed', index).map((champ) => (
+          <option key={champ.name} value={champ.name}>
+            {champ.name}
+          </option>
+        ))}
+      </select>
+    </div>
+  ))}
+  <h4>Team Blue</h4>
+  {newGame.teamBlue.map((selection, index) => (
+    <div key={`teamBlue-${index}`} className="player-champion-selection">
+      <select
+        value={selection.playerId || ''}
+        onChange={(e) => handlePlayerSelection('teamBlue', index, parseInt(e.target.value))}
+      >
+        <option value="">Select Player</option>
+        {getAvailablePlayers('teamBlue', index).map((user) => (
+          <option key={user.id} value={user.id}>
+            {user.name}
+          </option>
+        ))}
+      </select>
+      <select
+        value={selection.champion || ''}
+        onChange={(e) => handleChampionSelection('teamBlue', index, e.target.value)}
+      >
+        <option value="">Select Champion</option>
+        {getAvailableChampions('teamBlue', index).map((champ) => (
+          <option key={champ.name} value={champ.name}>
+            {champ.name}
+          </option>
+        ))}
+      </select>
+    </div>
+  ))}
+</div>
 
         <div>
           <label>Winning Team:</label>

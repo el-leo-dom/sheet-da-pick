@@ -81,3 +81,29 @@
     padding: 5px;
     width: 150px;
   }
+
+  .team-select-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .team-select-grid h4 {
+    grid-column: span 5;
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+  
+  .player-champion-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .player-champion-selection select {
+    margin-bottom: 5px;
+    width: 100%;
+  }
+  

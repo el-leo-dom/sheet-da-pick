@@ -119,14 +119,14 @@
 
 .mainpage-overlay .mainpage-content-sheet-top3-podium3{
     position: relative;
-    height: 6rem;
-    width: 6rem;
+    height: 4rem;
+    width: 4rem;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 100%;
     background-color: white;
-    margin-top: 2rem;
+    margin-top: 4rem;
 }
 
 .mainpage-overlay .mainpage-content-sheet-top3-podium1{
@@ -159,13 +159,12 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center;
-    gap: 4rem;
+    justify-content: space-evenly;
 }
 
 .mainpage-overlay .mainpage-content-latestgames-list{
     position: relative;
-    width: 30%;
+    width: 55%;
     height: 90%;
     margin-top: 2rem;
     border-radius: 0.5rem;
@@ -174,27 +173,139 @@
     align-items: center;
     flex-direction: start;
     padding: 0.75rem;
+    background-color: #0B2447;
+    overflow-y: scroll;
+}
+
+.mainpage-overlay .mainpage-content-latestgames-list-title{
+    position: relative;
+    font-family: 'Montserrat';
+    font-weight: 600;
+    font-size: 1.25rem;
     color: white;
 }
 
-.mainpage-overlay .mainpage-content-sheet-list{
+.mainpage-overlay .mainpage-content-latestgames-list-gamelist{
     position: relative;
-    width: 50%;
-    height: 90%;
-    background-color: #0B2447;
-    margin-top: 2rem;
-    border-radius: 0.5rem;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex-direction: start;
-    padding: 0.75rem;
+    justify-content: flex-start;
+    margin-top: 1rem;
+    gap: 0.5rem;
+}
+
+.mainpage-overlay .mainpage-content-latestgames-list-gameitem{
+    position: relative;
+    height: 8rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    background-color: #576CBC;
+    border-radius: 0.5rem;
+}
+
+.mainpage-overlay .mainpage-content-latestgames-list-gameitem-top{
+    position: relative;
+    height: 25%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+    border-radius: 0.5rem;
+    gap: 2rem;
+}
+
+.mainpage-overlay .mainpage-content-latestgames-list-gameitem-top-date{
+    position: relative;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-size: 0.925rem;
+    color: white;
+}
+
+.mainpage-overlay .mainpage-content-latestgames-list-gameitem-top-winner{
+    position: relative;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-size: 0.925rem;
+    color: white;
+}
+
+.mainpage-overlay .mainpage-content-latestgames-list-gameitem-bot{
+    position: relative;
+    height: 70%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 0.5rem;
+}
+
+.mainpage-overlay .mainpage-content-latestgames-list-gameitem-team{
+    position: relative;
+    height: 90%;
+    width: 45%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: white;
+    border-radius: 0.5rem;
+    background-color: #b1b2fa;
+}
+
+.mainpage-overlay .mainpage-content-latestgames-list-gameitem-team-player{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70%;
+    width: 20%;
+    font-family: 'Montserrat';
+    font-weight: 400;
+    font-size: 0.775rem;
+    color: black;
+}
+
+.mainpage-overlay .mainpage-content-latestgames-list-gameitem-team-player-icon{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat';
+    border-radius: 0.5rem;
+    height: 80%;
+    margin-bottom: 0.25rem;
+}
+
+.mainpage-overlay .mainpage-content-latestgames-list-gameitem-lpchange{
+    position: relative;
+    height: 90%;
+    width: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    background-color: white;
+    border-radius: 0.5rem;
+    font-family: 'Montserrat';
+    font-weight: 400;
+    font-size: 0.775rem;
+    color: black;
 }
 
 
 .mainpage-overlay .mainpage-content-sheet-list{
     position: relative;
-    width: 60%;
+    width: 40%;
     height: 90%;
     background-color: #0B2447;
     margin-top: 2rem;
@@ -226,7 +337,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 40%;
+    width: 30%;
     font-family: 'Montserrat';
     font-weight: 500;
     font-size: 1.125rem;
@@ -259,13 +370,13 @@
     border-left: 1.5px solid #0b244757;
 }
 
-.mainpage-overlay .mainpage-content-sheet-list-topbar-losses{
+.mainpage-overlay .mainpage-content-sheet-list-topbar-rank{
     position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 15%;
+    width: 25%;
     font-family: 'Montserrat';
     font-weight: 500;
     font-size: 1.125rem;
@@ -310,7 +421,7 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
-    width: 40%;
+    width: 30%;
     font-family: 'Montserrat';
     font-weight: 500;
     font-size: 1rem;
@@ -343,16 +454,16 @@
     border-left: 1.5px solid #0b244757;
 }
 
-.mainpage-overlay .mainpage-content-sheet-list-losses{
+.mainpage-overlay .mainpage-content-sheet-list-rank{
     position: relative;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    width: 15%;
+    width: 25%;
     font-family: 'Montserrat';
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 1.125rem;
     border-left: 1.5px solid #0b244757;
 }
 
