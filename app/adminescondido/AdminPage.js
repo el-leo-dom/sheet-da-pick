@@ -13,7 +13,6 @@ export default function AdminPage() {
   const [editUser, setEditUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [inputPassword, setInputPassword] = useState('');
-  const [championSearch, setChampionSearch] = useState('');
 
   const [newGame, setNewGame] = useState({
     teamRed: Array(5).fill({ playerId: null, champion: null }),
@@ -138,11 +137,7 @@ export default function AdminPage() {
     });
   }
 
-  function filterChampions() {
-    return champions.filter((champ) =>
-      champ.name.toLowerCase().includes(championSearch.toLowerCase())
-    );
-  }
+
 
   function handlePasswordSubmit() {
     if (inputPassword === password) {
