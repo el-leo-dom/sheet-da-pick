@@ -1,6 +1,5 @@
 'use client'
 
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import './MainPage.css'
 import { displayRank } from './displayRank.js'
