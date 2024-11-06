@@ -9,7 +9,7 @@ export async function DELETE(request, { params }) {
       where: { id: parseInt(id, 10) },
     });
     return new Response(JSON.stringify(deletedGame), { status: 200 });
-  } catch (error) {
+  } catch {
     return new Response(JSON.stringify({ error: 'Game not found or error deleting game' }), { status: 404 });
   }
 }

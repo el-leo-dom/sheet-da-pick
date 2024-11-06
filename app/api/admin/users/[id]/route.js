@@ -9,7 +9,7 @@ export async function DELETE(request, { params }) {
       where: { id: parseInt(id, 10) },
     });
     return new Response(JSON.stringify(deletedUser), { status: 200 });
-  } catch (error) {
+  } catch  {
     return new Response(JSON.stringify({ error: 'User not found or error deleting user' }), { status: 404 });
   }
 }
@@ -24,7 +24,7 @@ export async function PUT(request, { params }) {
       data: updatedData,
     });
     return new Response(JSON.stringify(updatedUser), { status: 200 });
-  } catch (error) {
+  } catch  {
     return new Response(JSON.stringify({ error: 'User not found or error updating user' }), { status: 404 });
   }
 }
