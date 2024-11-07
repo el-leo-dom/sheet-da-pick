@@ -9,6 +9,7 @@ export default function Home() {
   const [sidebarChoice, setSidebarChoice] = useState('sheetdapick') // sheetdapick, leaderboard
   const [players, setPlayers] = useState([]);
   const [games, setGames] = useState([])
+  const [expandedPlayerId, setExpandedPlayerId] = useState(null);
 
   useEffect(() => {
     fetchPlayers();
@@ -34,6 +35,39 @@ export default function Home() {
   function getChampionIcon(championName) {
     const champion = champions.find((champ) => champ.name === championName);
     return champion ? `/champs/${champion.name}.png` : null; // Adjust path if necessary
+  }
+
+
+  function toggleExpandPlayer(playerId) {
+    setExpandedPlayerId(prev => (prev === playerId ? null : playerId)); // Toggle expansion
+  }
+
+  function getPlayerChampionStats(player) {
+    const stats = {};
+    let totalWins = 0, totalLosses = 0;
+    if (player.championSelections) {
+      player.championSelections.forEach(selection => {
+        const { champion, win } = selection;
+        if (!stats[champion]) {
+          stats[champion] = { games: 0, wins: 0, losses: 0 };
+        }
+        stats[champion].games += 1;
+        if (win) {
+          stats[champion].wins += 1;
+          totalWins += 1;
+        } else {
+          stats[champion].losses += 1;
+          totalLosses += 1;
+        }
+      });
+    }
+    return {
+      championStats: stats,
+      totalWins,
+      totalLosses,
+      totalGames: totalWins + totalLosses,
+      winRate: ((totalWins / (totalWins + totalLosses)) * 100).toFixed(1),
+    };
   }
 
   return (
@@ -155,7 +189,8 @@ export default function Home() {
                     </div>
                   </div>
                   {players.map((player) => (
-                    <div key={player.id} className="mainpage-content-sheet-list-item">
+                    <>
+                    <div onClick={() => toggleExpandPlayer(player.id)} key={player.id} className="mainpage-content-sheet-list-item">
                         <div className="mainpage-content-sheet-list-player">
                           {player.name}
                         </div>
@@ -172,6 +207,44 @@ export default function Home() {
                           {player.lpPick % 100}
                         </div>
                     </div>
+                    {expandedPlayerId === player.id && (
+                      <div className="player-expanded-stats-modal">
+                        <div onClick={() => toggleExpandPlayer(null)}
+                        className="player-expanded-stats-modal-close">
+                          &times;
+                        </div>
+                        <div
+                        className="player-expanded-stats-modal-title">
+                          Stats detalhadas: &nbsp; <span style={{fontSize: '1.5rem'}}>{player.name}</span>
+                        </div>
+                        <div className="player-expanded-stats-modal-body">
+                          <div className="player-expanded-stats-modal-body-left">
+                            <div className="player-expanded-stats-modal-body-total-stats">
+                              <div><strong>Wins:</strong> &nbsp; {getPlayerChampionStats(player).totalWins}</div>
+                              <div><strong>Losses:</strong> &nbsp; {getPlayerChampionStats(player).totalLosses}</div>
+                              <div><strong>Total Games:</strong> &nbsp; {getPlayerChampionStats(player).totalGames}</div>
+                              <div><strong>Rank:</strong> &nbsp; {displayRank(player.lpPick)} - {player.lpPick % 100} LP</div>
+                              <div><strong>Total LP:</strong> &nbsp; {player.lpPick}</div>
+                              <div><strong>Win Rate:</strong> &nbsp; {getPlayerChampionStats(player).winRate}%</div>
+                            </div>
+                          </div>
+                          <div className="player-expanded-stats-modal-body-right">
+                            {Object.entries(getPlayerChampionStats(player).championStats).map(([champion, stats]) => (
+                              <div key={champion} className="player-expanded-stats-modal-body-champion-stats-container">
+                                <img src={getChampionIcon(champion)} alt={champion} className="player-expanded-stats-modal-body-champion-icon"/>
+                                <div className="player-expanded-stats-modal-body-champion-stat">Games: {stats.games}</div>
+                                <div className="player-expanded-stats-modal-body-champion-stat">Wins: {stats.wins}</div>
+                                <div className="player-expanded-stats-modal-body-champion-stat">Losses: {stats.losses}</div>
+                                <div className="player-expanded-stats-modal-body-champion-stat">
+                                  W/R: {((stats.wins / stats.games) * 100).toFixed(1)}%
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                    </>
                   ))}
                 </div>
               </div>
