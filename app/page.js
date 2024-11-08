@@ -70,8 +70,57 @@ export default function Home() {
     };
   }
 
+  function getPlayerRoleStats(player) {
+    const roleStats = {};
+    if (player.championSelections) {
+      player.championSelections.forEach(selection => {
+        const { lane, win } = selection;
+        if (!roleStats[lane]) {
+          roleStats[lane] = { games: 0, wins: 0, losses: 0 };
+        }
+        roleStats[lane].games += 1;
+        if (win) {
+          roleStats[lane].wins += 1;
+        } else {
+          roleStats[lane].losses += 1;
+        }
+      });
+    }
+  
+    // Calculate win rates for each role
+    Object.keys(roleStats).forEach(role => {
+      const { wins, games } = roleStats[role];
+      roleStats[role].winRate = ((wins / games) * 100).toFixed(1);
+    });
+  
+    return roleStats;
+  }
+
+  function getRoleIcon(lane) {
+    const roleIcons = {
+      TOP: '/rank_and_positions/Position_Gold-Top.png',
+      JUNGLE: '/rank_and_positions/Position_Gold-Jungle.png',
+      MID: '/rank_and_positions/Position_Gold-Mid.png',
+      BOT: '/rank_and_positions/Position_Gold-Bot.png',
+      SUPPORT: '/rank_and_positions/Position_Gold-Support.png',
+      NONE: '/icons/none.png', // Default icon for "None"
+    };
+  
+    return roleIcons[lane] || roleIcons.NONE; // Fallback to NONE if no match
+  }
+
+  function getRankIcon(lp) {
+    if (2000 <= lp  && lp <= 2399) return '/rank_and_positions/emblem-diamond.png';
+    if (1600 <= lp  && lp <= 1999) return '/rank_and_positions/emblem-platinum.png';
+    if (1200 <= lp  && lp <= 1599) return '/rank_and_positions/emblem-gold.png';
+    if (800 <= lp  && lp <= 1199) return '/rank_and_positions/emblem-silver.png';
+    if (400 <= lp  && lp <= 799) return '/rank_and_positions/emblem-bronze.png';
+    if (0 <= lp  && lp <= 399) return '/rank_and_positions/emblem-iron.png';
+  }
+
   return (
       <div className="mainpage-overlay">
+        {/* 
         <div className="mainpage-sidebar-container">
           <div className="mainpage-sidebar">
             <div onClick={() => setSidebarChoice('leaderboard')} className="mainpage-sidebar-option">
@@ -82,6 +131,7 @@ export default function Home() {
             </div>
           </div>
         </div>
+        */}
         <div className="mainpage-content-container">
         {sidebarChoice === "leaderboard" && (
             <div>
@@ -139,6 +189,13 @@ export default function Home() {
                                       />
                                     ))}
                                   {player.name}
+                                  <div className="mainpage-content-latestgames-list-gameitem-team-player-role">
+                                    <img
+                                      src={getRoleIcon(player.championSelections[0]?.lane || "NONE")}
+                                      alt={player.championSelections[0]?.lane || "None"}
+                                      className="mainpage-content-latestgames-list-gameitem-team-player-role-icon"
+                                    />
+                                  </div>
                                 </div>
                               ))}
                           </div>
@@ -162,6 +219,13 @@ export default function Home() {
                                       />
                                     ))}
                                   {player.name}
+                                  <div className="mainpage-content-latestgames-list-gameitem-team-player-role">
+                                    <img
+                                      src={getRoleIcon(player.championSelections[0]?.lane || "NONE")}
+                                      alt={player.championSelections[0]?.lane || "None"}
+                                      className="mainpage-content-latestgames-list-gameitem-team-player-role-icon"
+                                    />
+                                  </div>
                                 </div>
                               ))}
                           </div>
@@ -176,7 +240,7 @@ export default function Home() {
                       Jogador
                     </div>
                     <div className="mainpage-content-sheet-list-topbar-wins">
-                      Vitórias
+                      Wins
                     </div>
                     <div className="mainpage-content-sheet-list-topbar-games">
                       Jogos
@@ -193,6 +257,11 @@ export default function Home() {
                     <div onClick={() => toggleExpandPlayer(player.id)} key={player.id} className="mainpage-content-sheet-list-item">
                         <div className="mainpage-content-sheet-list-player">
                           {player.name}
+                          <img
+                            src={getRankIcon(player.lpPick)}
+                            alt="Rank Emblem"
+                            className="mainpage-content-sheet-list-player-rank-icon"
+                          />
                         </div>
                         <div className="mainpage-content-sheet-list-wins">
                           {player.winsPick}
@@ -227,6 +296,27 @@ export default function Home() {
                               <div><strong>Total LP:</strong> &nbsp; {player.lpPick}</div>
                               <div><strong>Win Rate:</strong> &nbsp; {getPlayerChampionStats(player).winRate}%</div>
                             </div>
+                            <div className="player-expanded-stats-modal-body-role-stats">
+                            {Object.entries(getPlayerRoleStats(player)).map(([role, stats]) => (
+                              <div key={role} className="player-expanded-stats-modal-body-role-stat-container">
+                                <div className="player-expanded-stats-modal-body-role-stats-icon-container">
+                                  <img
+                                    src={getRoleIcon(role)}
+                                    alt={role}
+                                    className="player-expanded-stats-modal-body-role-stats-icon"
+                                  />
+                                </div>
+                                <div className="player-expanded-stats-modal-body-role-stats-text-container">
+                                  <div className="player-expanded-stats-modal-body-role-stats-text">
+                                    W/L: {stats.wins} / {stats.losses}
+                                  </div>
+                                  <div className="player-expanded-stats-modal-body-role-stats-text">
+                                    WR: {stats.winRate}%
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
                           </div>
                           <div className="player-expanded-stats-modal-body-right">
                             {Object.entries(getPlayerChampionStats(player).championStats).map(([champion, stats]) => (

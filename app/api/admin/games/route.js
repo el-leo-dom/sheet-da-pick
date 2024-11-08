@@ -12,6 +12,7 @@ export async function GET() {
             select: {
               gameId: true,
               champion: true,
+              lane: true,
             },
           },
         },
@@ -24,6 +25,7 @@ export async function GET() {
             select: {
               gameId: true,
               champion: true,
+              lane: true,
             },
           },
         },
@@ -50,6 +52,8 @@ export async function GET() {
 
   return new Response(JSON.stringify(gamesWithFilteredSelections), { status: 200 });
 }
+
+
   export async function POST(request) {
     const { teamRed, teamBlue, winningTeam, playerChampionPairs } = await request.json();
   
@@ -103,12 +107,13 @@ export async function GET() {
       });
 
         // Add game-specific champion entries
-        await Promise.all(playerChampionPairs.map(({ playerId, champion }) =>
+        await Promise.all(playerChampionPairs.map(({ playerId, champion, lane }) =>
           tx.pickGamePlayerChampion.create({
             data: {
-              gameId: createdGame.id,  // Link specifically to the new game
+              gameId: createdGame.id,
               playerId,
               champion,
+              lane, // Add lane here
             },
           })
         ));

@@ -64,7 +64,7 @@
 .mainpage-overlay .mainpage-content-container{
     position: relative;
     height: 100%;
-    width: 82.5%;
+    width: 95%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -119,8 +119,8 @@
 
 .mainpage-overlay .mainpage-content-sheet-top3-podium3{
     position: relative;
-    height: 4rem;
-    width: 4rem;
+    height: 2rem;
+    width: 2rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -132,8 +132,8 @@
 .mainpage-overlay .mainpage-content-sheet-top3-podium1{
     position: relative;
     display: flex;
-    height: 8rem;
-    width: 8rem;
+    height: 6rem;
+    width: 6rem;
     align-items: center;
     justify-content: center;
     border-radius: 100%;
@@ -143,8 +143,8 @@
 .mainpage-overlay .mainpage-content-sheet-top3-podium2{
     position: relative;
     display: flex;
-    height: 6rem;
-    width: 6rem;
+    height: 4rem;
+    width: 4rem;
     align-items: center;
     justify-content: center;
     border-radius: 100%;
@@ -270,7 +270,7 @@
     width: 20%;
     font-family: 'Montserrat';
     font-weight: 400;
-    font-size: 0.775rem;
+    font-size: 0.665rem;
     color: black;
 }
 
@@ -282,10 +282,28 @@
     justify-content: center;
     font-family: 'Montserrat';
     border-radius: 0.5rem;
-    height: 80%;
+    height: 60%;
     margin-bottom: 0.25rem;
 }
 
+
+.mainpage-overlay .mainpage-content-latestgames-list-gameitem-team-player-role{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 30%;
+}
+
+.mainpage-overlay .mainpage-content-latestgames-list-gameitem-team-player-role-icon{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
 .mainpage-overlay .mainpage-content-latestgames-list-gameitem-lpchange{
     position: relative;
     height: 90%;
@@ -340,7 +358,7 @@
     width: 30%;
     font-family: 'Montserrat';
     font-weight: 500;
-    font-size: 1.125rem;
+    font-size: 1rem;
     padding-left: 1.5rem;
 }
 
@@ -353,7 +371,7 @@
     width: 15%;
     font-family: 'Montserrat';
     font-weight: 500;
-    font-size: 1.125rem;
+    font-size: 1rem;
     border-left: 1.5px solid #0b244757;
 }
 
@@ -366,7 +384,7 @@
     width: 15%;
     font-family: 'Montserrat';
     font-weight: 500;
-    font-size: 1.125rem;
+    font-size: 1rem;
     border-left: 1.5px solid #0b244757;
 }
 
@@ -379,7 +397,7 @@
     width: 25%;
     font-family: 'Montserrat';
     font-weight: 500;
-    font-size: 1.125rem;
+    font-size: 1rem;
     border-left: 1.5px solid #0b244757;
 }
 
@@ -392,7 +410,7 @@
     width: 15%;
     font-family: 'Montserrat';
     font-weight: 500;
-    font-size: 1.125rem;
+    font-size: 1rem;
     border-left: 1.5px solid #0b244757;
 }
 
@@ -425,7 +443,11 @@
     font-family: 'Montserrat';
     font-weight: 500;
     font-size: 1rem;
-    padding-left: 1.5rem;
+}
+
+.mainpage-overlay .mainpage-content-sheet-list-player-rank-icon{
+    position: absolute;
+    margin-left: 2.5rem;
 }
 
 .mainpage-overlay .mainpage-content-sheet-list-games{
@@ -487,8 +509,8 @@
     right: 0;
     left: 0;
     margin: auto;
-    width: 40vw;
-    height: 50vh;
+    width: 75vw;
+    height: 75vh;
     background-color: #0b2447;
     border-radius: 0.5rem;
     z-index: 1;
@@ -539,7 +561,7 @@
     width: 50%;
     height: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
 }
@@ -561,7 +583,7 @@
 
 .mainpage-overlay .player-expanded-stats-modal-body-total-stats{
     position: relative;
-    width: 90%;
+    width: 50%;
     height: 90%;
     display: flex;
     flex-direction: column;
@@ -573,15 +595,72 @@
     font-weight: 500;
 }
 
+.mainpage-overlay .player-expanded-stats-modal-body-role-stats{
+    position: relative;
+    width: 40%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    color: white;
+    gap: 1.25rem;
+    font-family: 'Montserrat';
+    font-weight: 500;
+}
+
+.mainpage-overlay .player-expanded-stats-modal-body-role-stat-container{
+    position: relative;
+    width: 100%;
+    height: 25%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+}
+
+.mainpage-overlay .player-expanded-stats-modal-body-role-stats-icon-container{
+    position: relative;
+    width: 15%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.mainpage-overlay .player-expanded-stats-modal-body-role-stats-icon{
+    position: relative;
+    width: 100%;
+}
+
+.mainpage-overlay .player-expanded-stats-modal-body-role-stats-text-container{
+    position: relative;
+    width: 85%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: start;
+
+}
+
+.mainpage-overlay .player-expanded-stats-modal-body-role-stats-text{
+    position: relative;
+    color: white;
+    font-family: 'Montserrat';
+    font-weight: 500;
+    font-size: 0.775rem;
+    padding-left: 1rem;
+}
+
 .mainpage-overlay .player-expanded-stats-modal-body-champion-stats-container{
     position: relative;
     width: 25%;
     height: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
 }
 
 .mainpage-overlay .player-expanded-stats-modal-body-champion-icon{

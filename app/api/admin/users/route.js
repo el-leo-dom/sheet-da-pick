@@ -13,6 +13,7 @@ export async function GET() {
       championSelections: {
         select: {
           champion: true,
+          lane: true,
           game: {
             select: {
               id: true,
@@ -36,6 +37,7 @@ export async function GET() {
       return {
         champion: selection.champion,
         gameId: selection.game.id,
+        lane: selection.lane,
         win: playerTeamWon,
       };
     });

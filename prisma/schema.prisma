@@ -50,9 +50,19 @@ model PickGamePlayerChampion {
   player      Player   @relation(fields: [playerId], references: [id])
   playerId    Int
   champion    String
+  lane        Lane     @default(NONE)
 }
 
 enum Team {
   TEAM_RED
   TEAM_BLUE
+}
+
+enum Lane {
+  TOP
+  JUNGLE
+  MID
+  BOT
+  SUPPORT
+  NONE
 }

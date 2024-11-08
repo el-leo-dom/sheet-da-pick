@@ -13,6 +13,8 @@ export default function AdminPage() {
   const [editUser, setEditUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [inputPassword, setInputPassword] = useState('');
+  const [editGameId, setEditGameId] = useState(null);
+  const [editGame, setEditGame] = useState(null);
 
   const [newGame, setNewGame] = useState({
     teamRed: Array(5).fill({ playerId: null, champion: null }),
@@ -62,16 +64,22 @@ export default function AdminPage() {
   async function addGame() {
     const { teamRed, teamBlue, winningTeam } = newGame;
 
-    // Ensure each team has players and champions selected
-    if (teamRed.some(({ playerId, champion }) => !playerId || !champion) ||
-        teamBlue.some(({ playerId, champion }) => !playerId || !champion)) {
-      alert('Each team must have 5 unique players with champions selected.');
-      return;
-    }
+    // Ensure each team has players, champions, and lanes selected
+  if (teamRed.some(({ playerId, champion, lane }) => !playerId || !champion || !lane) ||
+    teamBlue.some(({ playerId, champion, lane }) => !playerId || !champion || !lane)) {
+  alert('Each team must have 5 unique players with champions and lanes selected.');
+  return;
+  }
 
     const playerChampionPairs = [
-      ...teamRed.map((selection) => ({ playerId: selection.playerId, champion: selection.champion })),
-      ...teamBlue.map((selection) => ({ playerId: selection.playerId, champion: selection.champion })),
+      ...teamRed.map((selection) => ({ 
+        playerId: selection.playerId, 
+        champion: selection.champion,
+        lane: selection.lane })),
+      ...teamBlue.map((selection) => ({ 
+        playerId: selection.playerId,
+         champion: selection.champion,
+         lane: selection.lane })),
     ];
 
     await fetch('/api/admin/games', {
@@ -94,17 +102,18 @@ export default function AdminPage() {
     fetchGames();
   }
 
-  function handleChampionSelection(team, index, championName) {
+  function handleChampionSelection(team, index, key, value) {
     setNewGame((prevGame) => {
       const updatedTeam = [...prevGame[team]];
-      updatedTeam[index] = { ...updatedTeam[index], champion: championName };
-
+      updatedTeam[index] = { ...updatedTeam[index], [key]: value };
+  
       return {
         ...prevGame,
         [team]: updatedTeam,
       };
     });
   }
+  
 
   
   function getAvailablePlayers(team, index) {
@@ -145,6 +154,46 @@ export default function AdminPage() {
     } else {
       alert('Incorrect password');
     }
+  }
+
+
+  function handleEditGame(game) {
+    setEditGameId(game.id);
+    setEditGame({
+      ...game,
+      teamRed: game.teamRed.map((player) => ({
+        playerId: player.id,
+        champion: player.championSelections[0]?.champion || '',
+        lane: player.championSelections[0]?.lane || 'NONE'
+      })),
+      teamBlue: game.teamBlue.map((player) => ({
+        playerId: player.id,
+        champion: player.championSelections[0]?.champion || '',
+        lane: player.championSelections[0]?.lane || 'NONE'
+      })),
+    });
+  }
+
+  async function saveEditedGame() {
+    const { teamRed, teamBlue } = editGame;
+
+    await fetch(`/api/admin/games/${editGameId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ teamRed, teamBlue }),
+    });
+
+    setEditGameId(null);
+    setEditGame(null);
+    fetchGames();
+  }
+
+  function handlePlayerChampionChange(team, index, key, value) {
+    setEditGame((prev) => {
+      const updatedTeam = [...prev[team]];
+      updatedTeam[index] = { ...updatedTeam[index], [key]: value };
+      return { ...prev, [team]: updatedTeam };
+    });
   }
 
 
@@ -191,15 +240,15 @@ export default function AdminPage() {
 
 
       <section className="admin-section">
-        <h3>Add Game</h3>
+  <h3>Add Game</h3>
 
-        <div className="team-select-grid">
+  <div className="team-select-grid">
   <h4>Team Red</h4>
   {newGame.teamRed.map((selection, index) => (
     <div key={`teamRed-${index}`} className="player-champion-selection">
       <select
         value={selection.playerId || ''}
-        onChange={(e) => handlePlayerSelection('teamRed', index, parseInt(e.target.value))}
+        onChange={(e) => handleChampionSelection('teamRed', index, 'playerId', parseInt(e.target.value))}
       >
         <option value="">Select Player</option>
         {getAvailablePlayers('teamRed', index).map((user) => (
@@ -210,7 +259,7 @@ export default function AdminPage() {
       </select>
       <select
         value={selection.champion || ''}
-        onChange={(e) => handleChampionSelection('teamRed', index, e.target.value)}
+        onChange={(e) => handleChampionSelection('teamRed', index, 'champion', e.target.value)}
       >
         <option value="">Select Champion</option>
         {getAvailableChampions('teamRed', index).map((champ) => (
@@ -219,14 +268,29 @@ export default function AdminPage() {
           </option>
         ))}
       </select>
+      <select
+        value={selection.lane || 'NONE'}
+        onChange={(e) => handleChampionSelection('teamRed', index, 'lane', e.target.value)}
+      >
+        {['NONE', 'TOP', 'JUNGLE', 'MID', 'BOT', 'SUPPORT'].map((lane) => (
+          <option key={lane} value={lane}>
+            {lane}
+          </option>
+        ))}
+      </select>
     </div>
   ))}
+</div>
+
+
+
+<div className="team-select-grid">
   <h4>Team Blue</h4>
   {newGame.teamBlue.map((selection, index) => (
     <div key={`teamBlue-${index}`} className="player-champion-selection">
       <select
         value={selection.playerId || ''}
-        onChange={(e) => handlePlayerSelection('teamBlue', index, parseInt(e.target.value))}
+        onChange={(e) => handleChampionSelection('teamBlue', index, 'playerId', parseInt(e.target.value))}
       >
         <option value="">Select Player</option>
         {getAvailablePlayers('teamBlue', index).map((user) => (
@@ -237,7 +301,7 @@ export default function AdminPage() {
       </select>
       <select
         value={selection.champion || ''}
-        onChange={(e) => handleChampionSelection('teamBlue', index, e.target.value)}
+        onChange={(e) => handleChampionSelection('teamBlue', index, 'champion', e.target.value)}
       >
         <option value="">Select Champion</option>
         {getAvailableChampions('teamBlue', index).map((champ) => (
@@ -246,22 +310,34 @@ export default function AdminPage() {
           </option>
         ))}
       </select>
+      <select
+        value={selection.lane || 'NONE'}
+        onChange={(e) => handleChampionSelection('teamBlue', index, 'lane', e.target.value)}
+      >
+        {['NONE', 'TOP', 'JUNGLE', 'MID', 'BOT', 'SUPPORT'].map((lane) => (
+          <option key={lane} value={lane}>
+            {lane}
+          </option>
+        ))}
+      </select>
     </div>
   ))}
 </div>
 
-        <div>
-          <label>Winning Team:</label>
-          <select
-            value={newGame.winningTeam}
-            onChange={(e) => setNewGame({ ...newGame, winningTeam: e.target.value })}
-          >
-            <option value="TEAM_RED">Team Red</option>
-            <option value="TEAM_BLUE">Team Blue</option>
-          </select>
-        </div>
-        <button onClick={addGame}>Create Game</button>
-      </section>
+
+  <div>
+    <label>Winning Team:</label>
+    <select
+      value={newGame.winningTeam}
+      onChange={(e) => setNewGame({ ...newGame, winningTeam: e.target.value })}
+    >
+      <option value="TEAM_RED">Team Red</option>
+      <option value="TEAM_BLUE">Team Blue</option>
+    </select>
+  </div>
+  <button onClick={addGame}>Create Game</button>
+</section>
+
 
       <section className="admin-section">
         <h3>Games</h3>
@@ -271,11 +347,80 @@ export default function AdminPage() {
               <div>
                 Game #{game.id} - Winning Team: {game.winningTeam}
               </div>
+              <button onClick={() => handleEditGame(game)}>Edit</button>
               <button onClick={() => deleteGame(game.id)}>Delete</button>
             </li>
           ))}
         </ul>
       </section>
+      {/* Edit Game Modal */}
+      {editGameId && (
+            <div className="edit-game-modal">
+              <h3>Edit Game #{editGameId}</h3>
+              <div className="team-select-grid">
+                <h4>Team Red</h4>
+                {editGame.teamRed.map((selection, index) => (
+                  <div key={`teamRed-${index}`} className="player-champion-selection">
+                  <span className="player-name">
+                    {users.find(user => user.id === selection.playerId)?.name || 'Unknown Player'}:
+                  </span>
+                  <select
+                    value={selection.champion}
+                    onChange={(e) => handlePlayerChampionChange('teamRed', index, 'champion', e.target.value)}
+                  >
+                    <option value="">Select Champion</option>
+                    {champions.map((champ) => (
+                      <option key={champ.name} value={champ.name}>
+                        {champ.name}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    value={selection.lane}
+                    onChange={(e) => handlePlayerChampionChange('teamRed', index, 'lane', e.target.value)}
+                  >
+                    {['NONE', 'TOP', 'JUNGLE', 'MID', 'BOT', 'SUPPORT'].map((lane) => (
+                      <option key={lane} value={lane}>
+                        {lane}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                ))}
+                <h4>Team Blue</h4>
+                {editGame.teamBlue.map((selection, index) => (
+                  <div key={`teamRed-${index}`} className="player-champion-selection">
+                  <span className="player-name">
+                    {users.find(user => user.id === selection.playerId)?.name || 'Unknown Player'}:
+                  </span>
+                  <select
+                    value={selection.champion}
+                    onChange={(e) => handlePlayerChampionChange('teamBlue', index, 'champion', e.target.value)}
+                  >
+                    <option value="">Select Champion</option>
+                    {champions.map((champ) => (
+                      <option key={champ.name} value={champ.name}>
+                        {champ.name}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    value={selection.lane}
+                    onChange={(e) => handlePlayerChampionChange('teamBlue', index, 'lane', e.target.value)}
+                  >
+                    {['NONE', 'TOP', 'JUNGLE', 'MID', 'BOT', 'SUPPORT'].map((lane) => (
+                      <option key={lane} value={lane}>
+                        {lane}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                ))}
+              </div>
+              <button onClick={saveEditedGame}>Save</button>
+              <button onClick={() => setEditGameId(null)}>Cancel</button>
+            </div>
+          )}
       {editUser && (
         <section className="admin-section">
           <h3>Edit User</h3>
