@@ -133,12 +133,6 @@ export default function Home() {
         </div>
         */}
         <div className="mainpage-content-container">
-        {sidebarChoice === "leaderboard" && (
-            <div>
-              pick
-            </div>
-          )}
-          {sidebarChoice === "sheetdapick" && (
             <div className="mainpage-content-sheet">
               <div className="mainpage-content-sheet-top3-container">
                 <div className="mainpage-content-sheet-top3-title">
@@ -340,7 +334,6 @@ export default function Home() {
               </div>
               
             </div>
-          )}
         </div>
       </div>
   );
