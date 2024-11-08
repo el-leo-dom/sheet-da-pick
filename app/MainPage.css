@@ -447,7 +447,8 @@
 
 .mainpage-overlay .mainpage-content-sheet-list-player-rank-icon{
     position: absolute;
-    margin-left: 2.5rem;
+    margin-left: 4rem;
+    height: 100%;
 }
 
 .mainpage-overlay .mainpage-content-sheet-list-games{
