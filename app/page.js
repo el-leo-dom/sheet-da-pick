@@ -6,7 +6,7 @@ import { displayRank } from './displayRank.js'
 import { champions } from "./icons/champs/champsArray";
 
 export default function Home() {
-  const [sidebarChoice, setSidebarChoice] = useState('sheetdapick') // sheetdapick, leaderboard
+  // const [sidebarChoice, setSidebarChoice] = useState('sheetdapick') // sheetdapick, leaderboard
   const [players, setPlayers] = useState([]);
   const [games, setGames] = useState([])
   const [expandedPlayerId, setExpandedPlayerId] = useState(null);

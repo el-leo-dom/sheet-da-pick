@@ -134,17 +134,6 @@ export default function AdminPage() {
     return champions.filter((champ) => !selectedChampions.has(champ.name) || champ.name === currentChampion);
   }
 
-  function handlePlayerSelection(team, index, playerId) {
-    setNewGame((prevGame) => {
-      const updatedTeam = [...prevGame[team]];
-      updatedTeam[index] = { ...updatedTeam[index], playerId };
-
-      return {
-        ...prevGame,
-        [team]: updatedTeam,
-      };
-    });
-  }
 
 
 

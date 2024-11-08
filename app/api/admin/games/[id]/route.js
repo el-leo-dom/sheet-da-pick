@@ -47,7 +47,7 @@ export async function PUT(request, { params }) {
     ]);
 
     return new Response(JSON.stringify({ message: 'Game updated successfully' }), { status: 200 });
-  } catch (error) {
+  } catch {
     return new Response(JSON.stringify({ error: 'Failed to update game' }), { status: 500 });
   }
 }
