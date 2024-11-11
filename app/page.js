@@ -118,6 +118,20 @@ export default function Home() {
     if (0 <= lp  && lp <= 399) return '/rank_and_positions/emblem-iron.png';
   }
 
+  function getPlayerIcon(playerName) {
+    return `/playericons/${playerName}.jpg`;
+  }
+  
+  function checkPlayerIcon(playerName) {
+    // Assuming images are served correctly from the public folder
+    const image = new Image();
+    image.src = getPlayerIcon(playerName);
+    image.onerror = () => {
+      image.src = '/playericons/noicon.jpg';
+    };
+    return image.src;
+  }
+
   return (
       <div className="mainpage-overlay">
         {/* 
@@ -136,18 +150,30 @@ export default function Home() {
             <div className="mainpage-content-sheet">
               <div className="mainpage-content-sheet-top3-container">
                 <div className="mainpage-content-sheet-top3-title">
-                  Top 3 Monstros da Pick
+                  Top 3
                 </div>
                 <div className="mainpage-content-sheet-top3-podium">
-                  <div className="mainpage-content-sheet-top3-podium3">
-                    3
-                  </div>
-                  <div className="mainpage-content-sheet-top3-podium1">
-                    2
-                  </div>
-                  <div className="mainpage-content-sheet-top3-podium2">
-                    1
-                  </div>
+                  {players.slice(0, 3).map((player, index) => (
+                    <div
+                      key={player.id}
+                      className={`mainpage-content-sheet-top3-podium${index + 1}`}
+                    >
+                      <img
+                        src={`/playericons/${player.name}.jpg`}
+                        alt={player.name}
+                        onError={(e) => {
+                          e.target.src = '/playericons/noicon.png';
+                        }}
+                        className="mainpage-content-sheet-top3-podium-icon"
+                      />
+                      <div className="mainpage-content-sheet-top3-podium-name">
+                      {index + 1}º: {player.name}
+                      </div>
+                      <div className="mainpage-content-sheet-top3-podium-lp">
+                        {player.lpPick} LP
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
               <div className="mainpage-content-info-container">
@@ -234,7 +260,7 @@ export default function Home() {
                       Jogador
                     </div>
                     <div className="mainpage-content-sheet-list-topbar-wins">
-                      Wins
+                      W/L
                     </div>
                     <div className="mainpage-content-sheet-list-topbar-games">
                       Jogos
@@ -258,7 +284,7 @@ export default function Home() {
                           />
                         </div>
                         <div className="mainpage-content-sheet-list-wins">
-                          {player.winsPick}
+                          {player.winsPick} / {player.gamesPlayedPick - player.winsPick}
                         </div>
                         <div className="mainpage-content-sheet-list-games">
                           {player.gamesPlayedPick}
@@ -316,9 +342,7 @@ export default function Home() {
                             {Object.entries(getPlayerChampionStats(player).championStats).map(([champion, stats]) => (
                               <div key={champion} className="player-expanded-stats-modal-body-champion-stats-container">
                                 <img src={getChampionIcon(champion)} alt={champion} className="player-expanded-stats-modal-body-champion-icon"/>
-                                <div className="player-expanded-stats-modal-body-champion-stat">Games: {stats.games}</div>
-                                <div className="player-expanded-stats-modal-body-champion-stat">Wins: {stats.wins}</div>
-                                <div className="player-expanded-stats-modal-body-champion-stat">Losses: {stats.losses}</div>
+                                <div className="player-expanded-stats-modal-body-champion-stat">W/L: {stats.wins} / {stats.losses}</div>
                                 <div className="player-expanded-stats-modal-body-champion-stat">
                                   W/R: {((stats.wins / stats.games) * 100).toFixed(1)}%
                                 </div>
