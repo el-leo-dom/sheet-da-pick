@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import './MainPage.css'
 import { displayRank } from './displayRank.js'
 import { champions } from "./icons/champs/champsArray";
+import './globals.css'; // Update with the correct path to your CSS file
+
 
 export default function Home() {
   // const [sidebarChoice, setSidebarChoice] = useState('sheetdapick') // sheetdapick, leaderboard
@@ -165,7 +167,7 @@ export default function Home() {
                   </div>
                   <div className="mainpage-content-sheet-bot3-podium">
                     <div className="mainpage-content-sheet-bot3-title">
-                      Lixo 3
+                      Lixo 3 🗑️🗑️🗑️
                     </div>
                     {players.slice(-3).reverse().map((player, index) => (
                       <div
