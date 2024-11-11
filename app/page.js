@@ -118,9 +118,6 @@ export default function Home() {
     if (0 <= lp  && lp <= 399) return '/rank_and_positions/emblem-iron.png';
   }
 
-  function getPlayerIcon(playerName) {
-    return `/playericons/${playerName}.jpg`;
-  }
   
   return (
       <div className="mainpage-overlay">
