@@ -122,16 +122,6 @@ export default function Home() {
     return `/playericons/${playerName}.jpg`;
   }
   
-  function checkPlayerIcon(playerName) {
-    // Assuming images are served correctly from the public folder
-    const image = new Image();
-    image.src = getPlayerIcon(playerName);
-    image.onerror = () => {
-      image.src = '/playericons/noicon.jpg';
-    };
-    return image.src;
-  }
-
   return (
       <div className="mainpage-overlay">
         {/* 
