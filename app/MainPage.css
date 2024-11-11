@@ -95,32 +95,57 @@
 }
 
 .mainpage-overlay .mainpage-content-sheet-top3-title{
-    position: relative;
+    position: absolute;
+    top: 0rem;
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    height: 20%;
     font-family: 'Montserrat';
     font-weight: 600;
     font-size: 1rem;
     color: white;
 }
 
+
+.mainpage-overlay .mainpage-content-sheet-top3-row{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+
+
 .mainpage-overlay .mainpage-content-sheet-top3-podium{
     position: relative;
     display: flex;
     flex-direction: row;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     height: 70%;
-    gap: 4rem;
+    gap: 1rem;
     padding-top: 0.5rem;
+    width: 50%;
+    border-right: 1.5px solid #0b24471f;
 }
 
 .mainpage-overlay .mainpage-content-sheet-top3-podium3{
     position: relative;
     display: flex;
-    height: 90%;
+    height: 80%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.mainpage-overlay .mainpage-content-sheet-top3-podium2{
+    position: relative;
+    display: flex;
+    height: 80%;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -130,7 +155,7 @@
 .mainpage-overlay .mainpage-content-sheet-top3-podium1{
     position: relative;
     display: flex;
-    height: 90%;
+    height: 80%;
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -169,9 +194,119 @@
     font-weight: 600;
     font-size: 0.675rem;
     color: white;
+    text-align: center;
 }
 
-.mainpage-overlay .mainpage-content-sheet-top3-podium2{
+
+
+
+.mainpage-overlay .mainpage-content-sheet-top3-title{
+    position: absolute;
+    top: -1rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat';
+    font-weight: 600;
+    font-size: 1rem;
+    color: white;
+}
+
+
+.mainpage-overlay .mainpage-content-sheet-top3-row{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+}
+
+
+.mainpage-overlay .mainpage-content-sheet-bot3-title{
+    position: absolute;
+    top: -1rem;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat';
+    font-weight: 600;
+    font-size: 1rem;
+    color: white;
+}
+
+
+
+.mainpage-overlay .mainpage-content-sheet-bot3-podium{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    height: 70%;
+    padding-top: 0.5rem;
+    width: 30%;
+    margin-left: 1rem;
+}
+
+.mainpage-overlay .mainpage-content-sheet-bot3-podium3{
+    position: relative;
+    display: flex;
+    height: 90%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.mainpage-overlay .mainpage-content-sheet-bot3-podium1{
+    position: relative;
+    display: flex;
+    height: 90%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.mainpage-overlay .mainpage-content-sheet-bot3-podium-icon{
+    position: relative;
+    display: flex;
+    height: 40%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.mainpage-overlay .mainpage-content-sheet-bot3-podium-name{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat';
+    font-weight: 600;
+    font-size: 0.675rem;
+    color: white;
+}
+
+.mainpage-overlay .mainpage-content-sheet-bot3-podium-lp{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Montserrat';
+    font-weight: 600;
+    font-size: 0.675rem;
+    color: white;
+    text-align: center;
+}
+
+.mainpage-overlay .mainpage-content-sheet-bot3-podium2{
     position: relative;
     display: flex;
     height: 90%;

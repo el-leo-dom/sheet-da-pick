@@ -136,31 +136,59 @@ export default function Home() {
         <div className="mainpage-content-container">
             <div className="mainpage-content-sheet">
               <div className="mainpage-content-sheet-top3-container">
-                <div className="mainpage-content-sheet-top3-title">
-                  Top 3
-                </div>
-                <div className="mainpage-content-sheet-top3-podium">
-                  {players.slice(0, 3).map((player, index) => (
-                    <div
-                      key={player.id}
-                      className={`mainpage-content-sheet-top3-podium${index + 1}`}
-                    >
-                      <img
-                        src={`/playericons/${player.name}.jpg`}
-                        alt={player.name}
-                        onError={(e) => {
-                          e.target.src = '/playericons/noicon.png';
-                        }}
-                        className="mainpage-content-sheet-top3-podium-icon"
-                      />
-                      <div className="mainpage-content-sheet-top3-podium-name">
-                      {index + 1}º: {player.name}
-                      </div>
-                      <div className="mainpage-content-sheet-top3-podium-lp">
-                        {player.lpPick} LP
-                      </div>
+                <div className="mainpage-content-sheet-top3-row">
+                  <div className="mainpage-content-sheet-top3-podium">
+                    <div className="mainpage-content-sheet-top3-title">
+                      Top 3
                     </div>
-                  ))}
+                    {players.slice(0, 3).map((player, index) => (
+                      <div
+                        key={player.id}
+                        className={`mainpage-content-sheet-top3-podium${index + 1}`}
+                      >
+                        <img
+                          src={`/playericons/${player.name}.jpg`}
+                          alt={player.name}
+                          onError={(e) => {
+                            e.target.src = '/playericons/noicon.png';
+                          }}
+                          className="mainpage-content-sheet-top3-podium-icon"
+                        />
+                        <div className="mainpage-content-sheet-top3-podium-name">
+                        {index + 1}º: {player.name}
+                        </div>
+                        <div className="mainpage-content-sheet-top3-podium-lp">
+                          {displayRank(player.lpPick)} <br/> {player.lpPick % 100} LP
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mainpage-content-sheet-bot3-podium">
+                    <div className="mainpage-content-sheet-bot3-title">
+                      Lixo 3
+                    </div>
+                    {players.slice(-3).reverse().map((player, index) => (
+                      <div
+                        key={player.id}
+                        className={`mainpage-content-sheet-bot3-podium${index + 1}`}
+                      >
+                        <img
+                          src={`/playericons/${player.name}.jpg`}
+                          alt={player.name}
+                          onError={(e) => {
+                            e.target.src = '/playericons/noicon.png';
+                          }}
+                          className="mainpage-content-sheet-bot3-podium-icon"
+                        />
+                        <div className="mainpage-content-sheet-bot3-podium-name">
+                        {player.name}
+                        </div>
+                        <div className="mainpage-content-sheet-bot3-podium-lp">
+                          {displayRank(player.lpPick)} <br/> {player.lpPick % 100} LP
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
               <div className="mainpage-content-info-container">
