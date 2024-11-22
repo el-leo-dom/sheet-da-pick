@@ -51,15 +51,19 @@ export default function AdminPage() {
   }
 
   async function updateUser() {
+    // Create a copy of `editUser` without `championSelections`
+    const { championSelections, ...userData } = editUser;
+  
+    console.log('Sending updated user data:', userData);
+  
     await fetch(`/api/admin/users/${editUser.id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(editUser),
+      body: JSON.stringify(userData),
     });
     fetchUsers();
     setEditUser(null);
   }
-
 
   async function addGame() {
     const { teamRed, teamBlue, winningTeam } = newGame;
