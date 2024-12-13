@@ -52,7 +52,7 @@ export default function AdminPage() {
 
   async function updateUser() {
     // Create a copy of `editUser` without `championSelections`
-    const { championSelections, ...userData } = editUser;
+    const {userData} = editUser;
   
     console.log('Sending updated user data:', userData);
   
